@@ -31,10 +31,7 @@ Also, you can set the degrees value with Java.
 
 ```JAVA
 CompassView compass = (CompassView) findViewById(R.id.compass);
-
-// It accepts Float and Integer as degrees values  
 compass.setDegrees(57);
-compass.setDegrees(123.54);
 ```
 
 License
