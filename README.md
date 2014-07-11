@@ -25,13 +25,21 @@ You can declare a `CompassView` just like that:
     app:rangeDegrees="180.0" />
 ```
 
-Property values shown above are the defaults of the CompassView and could be omitted for brevity.
+Property values shown above are the defaults of the CompassView and it can be omitted for brevity.
 
-Also, you can set the degrees value with Java.
+Also, you can set all that properties with Java.
 
 ```JAVA
 CompassView compass = (CompassView) findViewById(R.id.compass);
+
 compass.setDegrees(57);
+compass.setBackgroundColor(Color.YELLOW);
+compass.setLineColor(Color.RED);
+compass.setMarkerColor(Color.BLACK);
+compass.setTextColor(Color.WHITE);
+compass.setShowMarker(false);
+compass.setTextSize(37);
+compass.setRangeDegrees(270);
 ```
 
 License

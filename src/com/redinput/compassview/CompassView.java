@@ -35,11 +35,9 @@ public class CompassView extends View {
 			mMarkerPaint;
 	private Path pathMarker;
 
-	private final int mTextColor, mBackgroundColor, mLineColor, mMarkerColor;
-	private float mDegrees;
-	private final float mTextSize;
-	private final float mRangeDegrees;
-	private final boolean mShowMarker;
+	private int mTextColor, mBackgroundColor, mLineColor, mMarkerColor;
+	private float mDegrees, mTextSize, mRangeDegrees;
+	private boolean mShowMarker;
 
 	public CompassView(Context context, AttributeSet attrs) {
 		super(context, attrs);
@@ -75,24 +73,18 @@ public class CompassView extends View {
 
 	private void init() {
 		mTextPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-		mTextPaint.setColor(mTextColor);
 		mTextPaint.setTextAlign(Align.CENTER);
-		mTextPaint.setTextSize(mTextSize);
 
 		mMainLinePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-		mMainLinePaint.setColor(mLineColor);
 		mMainLinePaint.setStrokeWidth(8f);
 
 		mSecondaryLinePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-		mSecondaryLinePaint.setColor(mLineColor);
 		mSecondaryLinePaint.setStrokeWidth(6f);
 
 		mTerciaryLinePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-		mTerciaryLinePaint.setColor(mLineColor);
 		mTerciaryLinePaint.setStrokeWidth(3f);
 
 		mMarkerPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-		mMarkerPaint.setColor(mMarkerColor);
 		mMarkerPaint.setStyle(Style.FILL);
 		pathMarker = new Path();
 	}
@@ -165,6 +157,15 @@ public class CompassView extends View {
 	@Override
 	protected void onDraw(Canvas canvas) {
 		super.onDraw(canvas);
+
+		mTextPaint.setColor(mTextColor);
+		mTextPaint.setTextSize(mTextSize);
+
+		mMainLinePaint.setColor(mLineColor);
+		mSecondaryLinePaint.setColor(mLineColor);
+		mTerciaryLinePaint.setColor(mLineColor);
+
+		mMarkerPaint.setColor(mMarkerColor);
 
 		canvas.drawColor(mBackgroundColor);
 
@@ -244,6 +245,53 @@ public class CompassView extends View {
 					.getString(R.string.out_index_degrees));
 
 		mDegrees = degrees;
+		invalidate();
+		requestLayout();
+	}
+
+	@Override
+	public void setBackgroundColor(int color) {
+		mBackgroundColor = color;
+		invalidate();
+		requestLayout();
+	}
+
+	public void setLineColor(int color) {
+		mLineColor = color;
+		invalidate();
+		requestLayout();
+	}
+
+	public void setMarkerColor(int color) {
+		mMarkerColor = color;
+		invalidate();
+		requestLayout();
+	}
+
+	public void setTextColor(int color) {
+		mTextColor = color;
+		invalidate();
+		requestLayout();
+	}
+
+	public void setShowMarker(boolean show) {
+		mShowMarker = show;
+		invalidate();
+		requestLayout();
+	}
+
+	public void setTextSize(int size) {
+		mTextSize = size;
+		invalidate();
+		requestLayout();
+	}
+
+	public void setRangeDegrees(float range) {
+		if ((mRangeDegrees < 90) || (mRangeDegrees > 360))
+			throw new IndexOutOfBoundsException(getResources().getString(
+					R.string.out_index_range_degrees));
+
+		mRangeDegrees = range;
 		invalidate();
 		requestLayout();
 	}
