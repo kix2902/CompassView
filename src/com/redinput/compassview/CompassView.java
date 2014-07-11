@@ -12,7 +12,7 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
-*/
+ */
 
 package com.redinput.compassview;
 
@@ -31,17 +31,15 @@ import android.view.View;
 
 public class CompassView extends View {
 
-	private int mDegrees;
-
 	private Paint mTextPaint, mMainLinePaint, mSecondaryLinePaint, mTerciaryLinePaint,
 			mMarkerPaint;
 	private Path pathMarker;
 
 	private final int mTextColor, mBackgroundColor, mLineColor, mMarkerColor;
-	private final float mTextSize, mRangeDegrees;
+	private float mDegrees;
+	private final float mTextSize;
+	private final float mRangeDegrees;
 	private final boolean mShowMarker;
-
-	private int minWidth, minHeight;
 
 	public CompassView(Context context, AttributeSet attrs) {
 		super(context, attrs);
@@ -50,13 +48,13 @@ public class CompassView extends View {
 				0);
 
 		mBackgroundColor = a.getColor(R.styleable.CompassView_backgroundColor, Color.BLACK);
-		mMarkerColor = a.getColor(R.styleable.CompassView_markerColor, Color.rgb(255, 0, 0));
+		mMarkerColor = a.getColor(R.styleable.CompassView_markerColor, Color.RED);
 		mShowMarker = a.getBoolean(R.styleable.CompassView_showMarker, true);
 		mLineColor = a.getColor(R.styleable.CompassView_lineColor, Color.WHITE);
 		mTextColor = a.getColor(R.styleable.CompassView_textColor, Color.WHITE);
 		mTextSize = a.getDimension(R.styleable.CompassView_textSize, 15 * getResources()
 				.getDisplayMetrics().scaledDensity);
-		mDegrees = a.getInt(R.styleable.CompassView_degrees, 0);
+		mDegrees = a.getFloat(R.styleable.CompassView_degrees, 0);
 		mRangeDegrees = a.getFloat(R.styleable.CompassView_rangeDegrees, 180f);
 
 		a.recycle();
@@ -82,19 +80,17 @@ public class CompassView extends View {
 		mTerciaryLinePaint.setColor(mLineColor);
 		mTerciaryLinePaint.setStrokeWidth(3f);
 
-		if (mShowMarker) {
-			mMarkerPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-			mMarkerPaint.setColor(mMarkerColor);
-			mMarkerPaint.setStyle(Style.FILL);
-			pathMarker = new Path();
-		}
+		mMarkerPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+		mMarkerPaint.setColor(mMarkerColor);
+		mMarkerPaint.setStyle(Style.FILL);
+		pathMarker = new Path();
 	}
 
 	@Override
 	protected Parcelable onSaveInstanceState() {
 		Bundle b = new Bundle();
 		b.putParcelable("instanceState", super.onSaveInstanceState());
-		b.putInt("degrees", mDegrees);
+		b.putFloat("degrees", mDegrees);
 
 		return b;
 	}
@@ -103,7 +99,7 @@ public class CompassView extends View {
 	protected void onRestoreInstanceState(Parcelable state) {
 		if (state instanceof Bundle) {
 			Bundle b = (Bundle) state;
-			mDegrees = b.getInt("degrees", 0);
+			mDegrees = b.getFloat("degrees", 0);
 
 			state = b.getParcelable("instanceState");
 		}
@@ -121,7 +117,7 @@ public class CompassView extends View {
 		int specMode = MeasureSpec.getMode(measureSpec);
 		int specSize = MeasureSpec.getSize(measureSpec);
 
-		minWidth = (int) Math.floor(50 * getResources().getDisplayMetrics().density);
+		int minWidth = (int) Math.floor(50 * getResources().getDisplayMetrics().density);
 
 		if (specMode == MeasureSpec.EXACTLY) {
 			result = specSize;
@@ -141,7 +137,7 @@ public class CompassView extends View {
 		int specMode = MeasureSpec.getMode(measureSpec);
 		int specSize = MeasureSpec.getSize(measureSpec);
 
-		minHeight = (int) Math.floor(30 * getResources().getDisplayMetrics().density);
+		int minHeight = (int) Math.floor(30 * getResources().getDisplayMetrics().density);
 
 		if (specMode == MeasureSpec.EXACTLY) {
 			result = specSize;
@@ -224,18 +220,14 @@ public class CompassView extends View {
 
 		if (mShowMarker) {
 			pathMarker.moveTo(width / 2, 3 * unitHeight + paddingTop);
-			pathMarker.lineTo((width / 2) + paddingLeft, paddingTop);
-			pathMarker.lineTo((width / 2) - paddingLeft, paddingTop);
+			pathMarker.lineTo((width / 2) + 20 + paddingLeft, paddingTop);
+			pathMarker.lineTo((width / 2) - 20 + paddingLeft, paddingTop);
 			pathMarker.close();
 			canvas.drawPath(pathMarker, mMarkerPaint);
 		}
 	}
 
 	public void setDegrees(float degrees) {
-		setDegrees((int) Math.floor(degrees));
-	}
-
-	public void setDegrees(int degrees) {
 		if ((mDegrees < 0) || (mDegrees > 359))
 			throw new IndexOutOfBoundsException(getResources()
 					.getString(R.string.out_index_degrees));
