@@ -59,7 +59,18 @@ public class CompassView extends View {
 
 		a.recycle();
 
+		checkValues();
 		init();
+	}
+
+	private void checkValues() {
+		if ((mDegrees < 0) || (mDegrees > 359))
+			throw new IndexOutOfBoundsException(getResources()
+					.getString(R.string.out_index_degrees));
+
+		if ((mRangeDegrees < 90) || (mRangeDegrees > 360))
+			throw new IndexOutOfBoundsException(getResources().getString(
+					R.string.out_index_range_degrees));
 	}
 
 	private void init() {
