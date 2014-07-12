@@ -232,8 +232,8 @@ public class CompassView extends View {
 
 		if (mShowMarker) {
 			pathMarker.moveTo(width / 2, 3 * unitHeight + paddingTop);
-			pathMarker.lineTo((width / 2) + 20 + paddingLeft, paddingTop);
-			pathMarker.lineTo((width / 2) - 20 + paddingLeft, paddingTop);
+			pathMarker.lineTo((width / 2) + 20, paddingTop);
+			pathMarker.lineTo((width / 2) - 20, paddingTop);
 			pathMarker.close();
 			canvas.drawPath(pathMarker, mMarkerPaint);
 		}
