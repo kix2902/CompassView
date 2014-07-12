@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 RedInput
++ * Copyright 2014 RedInput
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -240,9 +240,9 @@ public class CompassView extends View {
 	}
 
 	public void setDegrees(float degrees) {
-		if ((mDegrees < 0) || (mDegrees > 359))
+		if ((mDegrees < 0) || (mDegrees >= 360))
 			throw new IndexOutOfBoundsException(getResources()
-					.getString(R.string.out_index_degrees));
+					.getString(R.string.out_index_degrees) + mDegrees);
 
 		mDegrees = degrees;
 		invalidate();
@@ -289,7 +289,8 @@ public class CompassView extends View {
 	public void setRangeDegrees(float range) {
 		if ((mRangeDegrees < 90) || (mRangeDegrees > 360))
 			throw new IndexOutOfBoundsException(getResources().getString(
-					R.string.out_index_range_degrees));
+					R.string.out_index_range_degrees)
+					+ mRangeDegrees);
 
 		mRangeDegrees = range;
 		invalidate();

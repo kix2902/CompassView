@@ -21,7 +21,7 @@
     <string name="compass_east">E</string>
     <string name="compass_south">S</string>
     <string name="compass_west">W</string>
-    <string name="out_index_degrees" translatable="false">Degrees must be between 0 and 359, both inclusive</string>
-    <string name="out_index_range_degrees" translatable="false">Range degrees must be between 90 and 360, both inclusive</string>
+    <string name="out_index_degrees" translatable="false">Degrees must be between 0 and 359, both inclusive. Actual value: </string>
+    <string name="out_index_range_degrees" translatable="false">Range degrees must be between 90 and 360, both inclusive. Actual value: </string>
 
 </resources>
