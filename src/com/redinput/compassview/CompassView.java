@@ -27,9 +27,16 @@ import android.graphics.Path;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.util.AttributeSet;
+import android.view.GestureDetector;
+import android.view.MotionEvent;
 import android.view.View;
 
 public class CompassView extends View {
+	OnCompassDragListener mListener;
+
+	public interface OnCompassDragListener {
+		public void onCompassDragListener(float degrees);
+	}
 
 	private Paint mTextPaint, mMainLinePaint, mSecondaryLinePaint, mTerciaryLinePaint,
 			mMarkerPaint;
@@ -38,6 +45,8 @@ public class CompassView extends View {
 	private int mTextColor, mBackgroundColor, mLineColor, mMarkerColor;
 	private float mDegrees, mTextSize, mRangeDegrees;
 	private boolean mShowMarker;
+
+	private GestureDetector mDetector;
 
 	public CompassView(Context context, AttributeSet attrs) {
 		super(context, attrs);
@@ -87,6 +96,8 @@ public class CompassView extends View {
 		mMarkerPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 		mMarkerPaint.setStyle(Style.FILL);
 		pathMarker = new Path();
+
+		mDetector = new GestureDetector(getContext(), new mListener());
 	}
 
 	@Override
@@ -297,4 +308,43 @@ public class CompassView extends View {
 		requestLayout();
 	}
 
+	@Override
+	public boolean onTouchEvent(MotionEvent event) {
+		boolean result = mDetector.onTouchEvent(event);
+		if (!result) {
+			if (event.getAction() == MotionEvent.ACTION_UP) {
+				result = true;
+			}
+		}
+		return result;
+	}
+
+	private class mListener extends GestureDetector.SimpleOnGestureListener {
+
+		@Override
+		public boolean onDown(MotionEvent e) {
+			return true;
+		}
+
+		@Override
+		public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
+			mDegrees += distanceX / 5;
+			if (mDegrees < 0) {
+				mDegrees += 360;
+			} else if (mDegrees >= 360) {
+				mDegrees -= 360;
+			}
+
+			if (mListener != null) {
+				mListener.onCompassDragListener(mDegrees);
+			}
+
+			postInvalidate();
+			return true;
+		}
+	}
+
+	public void setOnCompassDragListener(OnCompassDragListener onCompassDragListener) {
+		this.mListener = onCompassDragListener;
+	}
 }
