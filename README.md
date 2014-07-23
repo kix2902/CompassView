@@ -42,6 +42,17 @@ compass.setTextSize(37);
 compass.setRangeDegrees(270);
 ```
 
+Another feature is that you can move the 'CompassView' dragging the view horizontally and even you can attach it a 'OnCompassDragListener' to observe the changes on the degrees value.
+
+```JAVA
+compass.setOnCompassDragListener(new CompassView.OnCompassDragListener() {
+	@Override
+	public void onCompassDragListener(float degrees) {
+		// Do what you want with the degrees
+	}
+});
+```
+
 License
 -------
     Copyright 2014 RedInput
