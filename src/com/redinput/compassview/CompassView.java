@@ -35,6 +35,12 @@ public class CompassView extends View {
 	OnCompassDragListener mListener;
 
 	public interface OnCompassDragListener {
+		/**
+		 * Indicates when a drag event has ocurred
+		 * 
+		 * @param degrees
+		 *            Actual value of the compass
+		 */
 		public void onCompassDragListener(float degrees);
 	}
 
