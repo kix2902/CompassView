@@ -103,7 +103,7 @@ public class CompassView extends View {
 		mMarkerPaint.setStyle(Style.FILL);
 		pathMarker = new Path();
 
-		mDetector = new GestureDetector(getContext(), new mListener());
+		mDetector = new GestureDetector(getContext(), new mGestureListener());
 	}
 
 	@Override
@@ -316,16 +316,20 @@ public class CompassView extends View {
 
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
-		boolean result = mDetector.onTouchEvent(event);
-		if (!result) {
-			if (event.getAction() == MotionEvent.ACTION_UP) {
-				result = true;
+		if (mListener != null) {
+			boolean result = mDetector.onTouchEvent(event);
+			if (!result) {
+				if (event.getAction() == MotionEvent.ACTION_UP) {
+					result = true;
+				}
 			}
+			return result;
+		} else {
+			return true;
 		}
-		return result;
 	}
 
-	private class mListener extends GestureDetector.SimpleOnGestureListener {
+	private class mGestureListener extends GestureDetector.SimpleOnGestureListener {
 
 		@Override
 		public boolean onDown(MotionEvent e) {
