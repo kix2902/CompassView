@@ -7,6 +7,10 @@ This library provides a fully customizable linear compass view.
 
 ![image](screenshot1.jpg)
 
+
+[![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-CompassView-brightgreen.svg?style=flat)](https://android-arsenal.com/details/1/1063)
+
+
 ## Usage
 You can declare a `CompassView` just like that:
 
@@ -52,6 +56,7 @@ compass.setOnCompassDragListener(new CompassView.OnCompassDragListener() {
 	}
 });
 ```
+
 
 License
 -------
