@@ -1,8 +1,9 @@
 apply plugin: 'com.android.library'
+apply plugin: 'com.novoda.bintray-release'
 
 android {
     compileSdkVersion 23
-    buildToolsVersion "23.0.1"
+    buildToolsVersion "23.0.2"
 
     defaultConfig {
         minSdkVersion 3
@@ -20,4 +21,13 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
+}
+
+publish {
+    userOrg = 'kix2902'
+    groupId = 'com.redinput.compassview'
+    artifactId = 'compassview'
+    publishVersion = '1.0'
+    desc = 'A fully customizable linear compass view'
+    website = 'https://github.com/RedInput/CompassView'
 }
