@@ -1,17 +1,33 @@
 CompassView
 ===========
 
+[![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-CompassView-brightgreen.svg?style=flat)](https://android-arsenal.com/details/1/1063)
+
 Compass view for Android.
 
 This library provides a fully customizable linear compass view.
 
 ![image](screenshot1.jpg)
 
+## Latest Version
 
-[![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-CompassView-brightgreen.svg?style=flat)](https://android-arsenal.com/details/1/1063)
+[ ![Download](https://api.bintray.com/packages/kix2902/maven/compassview/images/download.svg) ](https://bintray.com/kix2902/maven/compassview/_latestVersion) ![](https://img.shields.io/badge/platform-android-green.svg)
 
+## How to use
 
-## Usage
+### Configuring your project dependencies
+
+Add the library dependency to your build.gradle file.
+
+```groovy
+dependencies {
+    ...
+    compile 'com.redinput.compassview:compassview:1.0'
+}
+```
+
+## Adding and Customizing the View
+
 You can declare a `CompassView` just like that:
 
 ```XML
