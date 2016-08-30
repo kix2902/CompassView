@@ -186,15 +186,17 @@ public class CompassView extends View {
                         mTerciaryLinePaint);
 
                 if (i % 45 == 0) {
-                    canvas.drawLine(paddingLeft + pixDeg * (i - minDegrees),
-                            height - paddingBottom, paddingLeft + pixDeg * (i - minDegrees),
-                            8 * unitHeight + paddingTop, mSecondaryLinePaint);
-                }
 
-                if (i % 90 == 0) {
-                    canvas.drawLine(paddingLeft + pixDeg * (i - minDegrees),
-                            height - paddingBottom, paddingLeft + pixDeg * (i - minDegrees),
-                            6 * unitHeight + paddingTop, mMainLinePaint);
+
+                    if(i % 90 == 0) {
+                        canvas.drawLine(paddingLeft + pixDeg * (i - minDegrees),
+                                height - paddingBottom, paddingLeft + pixDeg * (i - minDegrees),
+                                6 * unitHeight + paddingTop, mMainLinePaint);
+                    } else {
+                        canvas.drawLine(paddingLeft + pixDeg * (i - minDegrees),
+                                height - paddingBottom, paddingLeft + pixDeg * (i - minDegrees),
+                                8 * unitHeight + paddingTop, mSecondaryLinePaint);
+                    }
 
                     String coord = "";
                     switch (i) {
@@ -202,25 +204,43 @@ public class CompassView extends View {
                         case 270:
                             coord = getResources().getString(R.string.compass_west);
                             break;
-
+                        case -45:
+                        case 315:
+                            coord = "NW";
+                            break;
                         case 0:
                         case 360:
                             coord = getResources().getString(R.string.compass_north);
                             break;
 
+                        case 45:
+                        case 395:
+                            coord = "NE";
+                            break;
                         case 90:
                         case 450:
                             coord = getResources().getString(R.string.compass_east);
+                            break;
+
+                        case 135:
+                        case 495:
+                            coord = "SE";
                             break;
 
                         case -180:
                         case 180:
                             coord = getResources().getString(R.string.compass_south);
                             break;
+
+                        case -135:
+                        case 225:
+                            coord = "SW";
+                            break;
                     }
 
                     canvas.drawText(coord, paddingLeft + pixDeg * (i - minDegrees), 5 * unitHeight
                             + paddingTop, mTextPaint);
+
                 }
             }
         }
