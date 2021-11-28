@@ -206,7 +206,7 @@ public class CompassView extends View {
                             break;
                         case -45:
                         case 315:
-                            coord = "NW";
+                            coord = getResources().getString(R.string.compass_northwest);
                             break;
                         case 0:
                         case 360:
@@ -215,7 +215,7 @@ public class CompassView extends View {
 
                         case 45:
                         case 395:
-                            coord = "NE";
+                            coord = getResources().getString(R.string.compass_northeast);
                             break;
                         case 90:
                         case 450:
@@ -224,7 +224,7 @@ public class CompassView extends View {
 
                         case 135:
                         case 495:
-                            coord = "SE";
+                            coord = getResources().getString(R.string.compass_southeast);
                             break;
 
                         case -180:
@@ -234,7 +234,7 @@ public class CompassView extends View {
 
                         case -135:
                         case 225:
-                            coord = "SW";
+                            coord = getResources().getString(R.string.compass_southwest);
                             break;
                     }
 
