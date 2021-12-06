@@ -9,20 +9,28 @@ This library provides a fully customizable linear compass view.
 
 ![image](screenshot1.jpg)
 
-## Latest Version
-
-[ ![Download](https://api.bintray.com/packages/kix2902/maven/compassview/images/download.svg) ](https://bintray.com/kix2902/maven/compassview/_latestVersion) ![](https://img.shields.io/badge/platform-android-green.svg)
-
 ## How to use
 
 ### Configuring your project dependencies
+
+Add the JitPack repository to your root build.gradle at the end of repositories:
+
+```groovy
+   	allprojects {
+    	repositories {
+    		...
+    		maven { url 'https://jitpack.io' }
+    	}
+    }
+````
+
 
 Add the library dependency to your build.gradle file.
 
 ```groovy
 dependencies {
     ...
-    compile 'com.redinput.compassview:compassview:1.0'
+    implementation 'com.github.kix2902:CompassView:master-SNAPSHOT'
 }
 ```
 
@@ -52,7 +60,8 @@ Also, you can set all that properties with Java.
 ```JAVA
 CompassView compass = (CompassView) findViewById(R.id.compass);
 
-compass.setDegrees(57);
+compass.setDegrees(57); //immediate change
+compass.setDegrees(57,true); //with animation
 compass.setBackgroundColor(Color.YELLOW);
 compass.setLineColor(Color.RED);
 compass.setMarkerColor(Color.BLACK);
@@ -60,6 +69,8 @@ compass.setTextColor(Color.WHITE);
 compass.setShowMarker(false);
 compass.setTextSize(37);
 compass.setRangeDegrees(270);
+
+compass.getDegrees(); //read current degrees value
 ```
 
 Another feature is that you can move the 'CompassView' dragging the view horizontally and even you can attach it a 'OnCompassDragListener' to observe the changes on the degrees value.

@@ -1,5 +1,6 @@
 package com.redinput.compassview;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
@@ -12,6 +13,9 @@ import android.util.AttributeSet;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
+
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class CompassView extends View {
     OnCompassDragListener mListener;
@@ -29,14 +33,16 @@ public class CompassView extends View {
     private Path pathMarker;
 
     private int mTextColor, mBackgroundColor, mLineColor, mMarkerColor;
-    private float mDegrees, mTextSize, mRangeDegrees;
+    private float mDegrees, mTextSize, mRangeDegrees, mTargetDegrees, mStep;
     private boolean mShowMarker;
+    private Activity mActivity;
+    private Timer mTimer;
 
     private GestureDetector mDetector;
 
     public CompassView(Context context, AttributeSet attrs) {
         super(context, attrs);
-
+        mActivity = (Activity) context;
         TypedArray a = context.getTheme().obtainStyledAttributes(attrs, R.styleable.CompassView, 0, 0);
 
         mBackgroundColor = a.getColor(R.styleable.CompassView_backgroundColor, Color.BLACK);
@@ -214,7 +220,7 @@ public class CompassView extends View {
                             break;
 
                         case 45:
-                        case 395:
+                        case 405:
                             coord = getResources().getString(R.string.compass_northeast);
                             break;
                         case 90:
@@ -246,6 +252,7 @@ public class CompassView extends View {
         }
 
         if (mShowMarker) {
+            pathMarker.reset();
             pathMarker.moveTo(width / 2, 3 * unitHeight + paddingTop);
             pathMarker.lineTo((width / 2) + 20, paddingTop);
             pathMarker.lineTo((width / 2) - 20, paddingTop);
@@ -254,14 +261,41 @@ public class CompassView extends View {
         }
     }
 
-    public void setDegrees(float degrees) {
-        if ((mDegrees < 0) || (mDegrees >= 360))
-            throw new IndexOutOfBoundsException(getResources()
-                    .getString(R.string.out_index_degrees) + mDegrees);
+    public void setDegrees(float degrees){
+        setDegrees(degrees,false);
+    }
 
-        mDegrees = degrees;
-        invalidate();
-        requestLayout();
+    public void setDegrees(float degrees,boolean animation) {
+        if (mTimer!=null) mTimer.cancel();
+        if (animation){
+            mTargetDegrees = (degrees+360) % 360;  //add 360 to make sure modulo operation returns positive value
+            mStep = (((mTargetDegrees - mDegrees + 360) % 360) <= 180) ? 1 : -1;
+
+            TimerTask timerTask;
+            mTimer = new Timer();
+            timerTask = new TimerTask() {
+                @Override
+                public void run() {
+                    if (Math.abs(mTargetDegrees-mDegrees)<=0.5||Math.abs(mTargetDegrees-mDegrees)>=359.5) {
+                        mTimer.cancel();
+                    }else{
+                        mDegrees = (mDegrees +360 + mStep) % 360;
+                        mActivity.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                invalidate();
+                                requestLayout();
+                            }
+                        });
+                    }
+                }
+            };
+            mTimer.schedule(timerTask,0,15);
+        }else{
+            mDegrees=mTargetDegrees;
+            invalidate();
+            requestLayout();
+        }
     }
 
     @Override
@@ -310,6 +344,10 @@ public class CompassView extends View {
         mRangeDegrees = range;
         invalidate();
         requestLayout();
+    }
+
+    public float getDegrees(){
+        return mDegrees;
     }
 
     @Override

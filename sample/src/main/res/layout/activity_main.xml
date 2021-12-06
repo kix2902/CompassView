@@ -6,10 +6,6 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent">
 
-    <com.redinput.compassview.CompassView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
-
     <View
         android:layout_width="match_parent"
         android:layout_height="50dp"/>
@@ -26,5 +22,22 @@
         app:textSize="12sp"
         app:degrees="103"
         app:rangeDegrees="90.0"/>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="+"
+        android:onClick="plus">
+    </Button>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="-"
+        android:onClick="minus">
+    </Button>
+    <TextView
+        android:id="@+id/text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        ></TextView>
 
 </LinearLayout>
