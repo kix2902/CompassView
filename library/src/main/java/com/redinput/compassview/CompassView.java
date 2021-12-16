@@ -141,7 +141,7 @@ public class CompassView extends View {
         int specMode = MeasureSpec.getMode(measureSpec);
         int specSize = MeasureSpec.getSize(measureSpec);
 
-        int minHeight = (int) Math.floor(30 * getResources().getDisplayMetrics().density);
+        int minHeight = (int) Math.floor(5 * getResources().getDisplayMetrics().density) + (int) (2*mTextSize);
 
         if (specMode == MeasureSpec.EXACTLY) {
             result = specSize;
