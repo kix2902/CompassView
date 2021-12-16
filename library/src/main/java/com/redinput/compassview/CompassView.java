@@ -278,6 +278,14 @@ public class CompassView extends View {
                 public void run() {
                     if (Math.abs(mTargetDegrees-mDegrees)<=0.5||Math.abs(mTargetDegrees-mDegrees)>=359.5) {
                         mTimer.cancel();
+                        mDegrees = mTargetDegrees;
+                        mActivity.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                invalidate();
+                                requestLayout();
+                            }
+                        });
                     }else{
                         mDegrees = (mDegrees +360 + mStep) % 360;
                         mActivity.runOnUiThread(new Runnable() {
