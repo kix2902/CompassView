@@ -300,7 +300,7 @@ public class CompassView extends View {
             };
             mTimer.schedule(timerTask,0,15);
         }else{
-            mDegrees=mTargetDegrees;
+            mDegrees=(degrees+360) % 360;
             invalidate();
             requestLayout();
         }
