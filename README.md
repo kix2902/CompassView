@@ -7,7 +7,13 @@ Compass view for Android.
 
 This library provides a fully customizable linear compass view.
 
+If configured range > 50 degrees:
+
 ![image](screenshot1.jpg)
+
+If range is below 50 degrees numbers are shown:
+
+![image](screenshot2.jpg)
 
 ## How to use
 

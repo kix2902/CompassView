@@ -23,8 +23,8 @@ public class MainActivity extends Activity {
         compass.setBackgroundColor(Color.YELLOW);
         compass.setLineColor(Color.RED);
         compass.setShowMarker(true);
-        compass.setRangeDegrees(270);
-        compass.setDegrees(0);
+        compass.setRangeDegrees(40);
+        compass.setDegrees(mDegrees);
         text.setText("0 degrees");
 
         compass.setOnCompassDragListener(new CompassView.OnCompassDragListener() {
@@ -36,8 +36,8 @@ public class MainActivity extends Activity {
         });
     }
 
-        public void plus(View view) {
-        mDegrees = (mDegrees+360+10)%360;
+    public void plus(View view) {
+        mDegrees = (mDegrees+360+50)%360;
         compass.setDegrees(mDegrees,true);
         text.setText(Float.toString(mDegrees)+" degrees");
     }
