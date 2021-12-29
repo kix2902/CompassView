@@ -312,7 +312,7 @@ public class CompassView extends View {
             timerTask = new TimerTask() {
                 @Override
                 public void run() {
-                    if (Math.abs(mTargetDegrees-mDegrees)<=0.5||Math.abs(mTargetDegrees-mDegrees)>=359.5) {
+                    if (Math.abs(mTargetDegrees-mDegrees)<=1||Math.abs(mTargetDegrees-mDegrees)>=359) {
                         mTimer.cancel();
                         mDegrees = mTargetDegrees;
                         mActivity.runOnUiThread(new Runnable() {
