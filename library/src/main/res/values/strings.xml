@@ -10,6 +10,6 @@
     <string name="compass_southeast">SE</string>
     <string name="compass_southwest">SW</string>
     <string name="out_index_degrees" translatable="false">Degrees must be between 0 and 359, both inclusive. Actual value: </string>
-    <string name="out_index_range_degrees" translatable="false">Range degrees must be between 90 and 360, both inclusive. Actual value: </string>
+    <string name="out_index_range_degrees" translatable="false">Range degrees must be between 10 and 360, both inclusive. Actual value: </string>
 
 </resources>

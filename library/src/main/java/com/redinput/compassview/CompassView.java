@@ -29,10 +29,10 @@ public class CompassView extends View {
         public void onCompassDragListener(float degrees);
     }
 
-    private Paint mTextPaint, mMainLinePaint, mSecondaryLinePaint, mTerciaryLinePaint, mMarkerPaint;
+    private Paint mTextPaint, mMainLinePaint, mSecondaryLinePaint, mTerciaryLinePaint, mMarkerPaint, mDegreeLinePaint;
     private Path pathMarker;
 
-    private int mTextColor, mBackgroundColor, mLineColor, mMarkerColor;
+    private int mTextColor, mBackgroundColor, mLineColor, mMarkerColor, mTimerPeriod;
     private float mDegrees, mTextSize, mRangeDegrees, mTargetDegrees, mStep;
     private boolean mShowMarker;
     private Activity mActivity;
@@ -65,7 +65,7 @@ public class CompassView extends View {
             throw new IndexOutOfBoundsException(getResources()
                     .getString(R.string.out_index_degrees));
 
-        if ((mRangeDegrees < 90) || (mRangeDegrees > 360))
+        if ((mRangeDegrees < 10) || (mRangeDegrees > 360))
             throw new IndexOutOfBoundsException(getResources().getString(
                     R.string.out_index_range_degrees));
     }
@@ -82,6 +82,9 @@ public class CompassView extends View {
 
         mTerciaryLinePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mTerciaryLinePaint.setStrokeWidth(3f);
+
+        mDegreeLinePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        mDegreeLinePaint.setStrokeWidth(1f);
 
         mMarkerPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mMarkerPaint.setStyle(Paint.Style.FILL);
@@ -165,6 +168,7 @@ public class CompassView extends View {
         mMainLinePaint.setColor(mLineColor);
         mSecondaryLinePaint.setColor(mLineColor);
         mTerciaryLinePaint.setColor(mLineColor);
+        mDegreeLinePaint.setColor(mLineColor);
 
         mMarkerPaint.setColor(mMarkerColor);
 
@@ -185,67 +189,93 @@ public class CompassView extends View {
         int minDegrees = Math.round(mDegrees - mRangeDegrees / 2), maxDegrees = Math.round(mDegrees
                 + mRangeDegrees / 2);
 
-        for (int i = -180; i < 540; i += 15) {
-            if ((i >= minDegrees) && (i <= maxDegrees)) {
-                canvas.drawLine(paddingLeft + pixDeg * (i - minDegrees), height - paddingBottom,
-                        paddingLeft + pixDeg * (i - minDegrees), 10 * unitHeight + paddingTop,
-                        mTerciaryLinePaint);
+        if (mRangeDegrees>50){
 
-                if (i % 45 == 0) {
+            for (int i = -180; i < 540; i += 15) {
+                if ((i >= minDegrees) && (i <= maxDegrees)) {
+                    canvas.drawLine(paddingLeft + pixDeg * (i - minDegrees), height - paddingBottom,
+                            paddingLeft + pixDeg * (i - minDegrees), 10 * unitHeight + paddingTop,
+                            mTerciaryLinePaint);
+
+                    if (i % 45 == 0) {
 
 
-                    if(i % 90 == 0) {
-                        canvas.drawLine(paddingLeft + pixDeg * (i - minDegrees),
-                                height - paddingBottom, paddingLeft + pixDeg * (i - minDegrees),
-                                6 * unitHeight + paddingTop, mMainLinePaint);
-                    } else {
+                        if (i % 90 == 0) {
+                            canvas.drawLine(paddingLeft + pixDeg * (i - minDegrees),
+                                    height - paddingBottom, paddingLeft + pixDeg * (i - minDegrees),
+                                    6 * unitHeight + paddingTop, mMainLinePaint);
+                        } else {
+                            canvas.drawLine(paddingLeft + pixDeg * (i - minDegrees),
+                                    height - paddingBottom, paddingLeft + pixDeg * (i - minDegrees),
+                                    8 * unitHeight + paddingTop, mSecondaryLinePaint);
+                        }
+
+                        String coord = "";
+                        switch (i) {
+                            case -90:
+                            case 270:
+                                coord = getResources().getString(R.string.compass_west);
+                                break;
+                            case -45:
+                            case 315:
+                                coord = getResources().getString(R.string.compass_northwest);
+                                break;
+                            case 0:
+                            case 360:
+                                coord = getResources().getString(R.string.compass_north);
+                                break;
+
+                            case 45:
+                            case 405:
+                                coord = getResources().getString(R.string.compass_northeast);
+                                break;
+                            case 90:
+                            case 450:
+                                coord = getResources().getString(R.string.compass_east);
+                                break;
+
+                            case 135:
+                            case 495:
+                                coord = getResources().getString(R.string.compass_southeast);
+                                break;
+
+                            case -180:
+                            case 180:
+                                coord = getResources().getString(R.string.compass_south);
+                                break;
+
+                            case -135:
+                            case 225:
+                                coord = getResources().getString(R.string.compass_southwest);
+                                break;
+                        }
+
+                        canvas.drawText(coord, paddingLeft + pixDeg * (i - minDegrees), 5 * unitHeight
+                                + paddingTop, mTextPaint);
+
+                    }
+                }
+            }
+        }else{
+            for (int i = -180; i < 540; i ++) {
+                if ((i >= minDegrees) && (i <= maxDegrees)) {
+                    canvas.drawLine(paddingLeft + pixDeg * (i - minDegrees),
+                            height - paddingBottom, paddingLeft + pixDeg * (i - minDegrees),
+                            10 * unitHeight + paddingTop, mDegreeLinePaint);
+
+                    if (i%5==0){
                         canvas.drawLine(paddingLeft + pixDeg * (i - minDegrees),
                                 height - paddingBottom, paddingLeft + pixDeg * (i - minDegrees),
                                 8 * unitHeight + paddingTop, mSecondaryLinePaint);
                     }
 
-                    String coord = "";
-                    switch (i) {
-                        case -90:
-                        case 270:
-                            coord = getResources().getString(R.string.compass_west);
-                            break;
-                        case -45:
-                        case 315:
-                            coord = getResources().getString(R.string.compass_northwest);
-                            break;
-                        case 0:
-                        case 360:
-                            coord = getResources().getString(R.string.compass_north);
-                            break;
-
-                        case 45:
-                        case 405:
-                            coord = getResources().getString(R.string.compass_northeast);
-                            break;
-                        case 90:
-                        case 450:
-                            coord = getResources().getString(R.string.compass_east);
-                            break;
-
-                        case 135:
-                        case 495:
-                            coord = getResources().getString(R.string.compass_southeast);
-                            break;
-
-                        case -180:
-                        case 180:
-                            coord = getResources().getString(R.string.compass_south);
-                            break;
-
-                        case -135:
-                        case 225:
-                            coord = getResources().getString(R.string.compass_southwest);
-                            break;
+                    if (i%10==0) {
+                        canvas.drawLine(paddingLeft + pixDeg * (i - minDegrees),
+                                height - paddingBottom, paddingLeft + pixDeg * (i - minDegrees),
+                                6 * unitHeight + paddingTop, mMainLinePaint);
+                        canvas.drawText(Integer.toString((i+360)%360), paddingLeft + pixDeg * (i - minDegrees), 5 * unitHeight
+                                + paddingTop, mTextPaint);
                     }
-
-                    canvas.drawText(coord, paddingLeft + pixDeg * (i - minDegrees), 5 * unitHeight
-                            + paddingTop, mTextPaint);
 
                 }
             }
@@ -271,12 +301,18 @@ public class CompassView extends View {
             mTargetDegrees = (degrees+360) % 360;  //add 360 to make sure modulo operation returns positive value
             mStep = (((mTargetDegrees - mDegrees + 360) % 360) <= 180) ? 1 : -1;
 
+            //change compass speed depending on difference to target value. Fast if big change required, slow if only minor change
+            if (Math.abs(mTargetDegrees-mDegrees)<=15||Math.abs(mTargetDegrees-mDegrees)>=345) mTimerPeriod = 60;
+            else if (Math.abs(mTargetDegrees-mDegrees)<=30||Math.abs(mTargetDegrees-mDegrees)>=330) mTimerPeriod = 45;
+            else if (Math.abs(mTargetDegrees-mDegrees)<=60||Math.abs(mTargetDegrees-mDegrees)>=300) mTimerPeriod = 30;
+            else mTimerPeriod=15;
+
             TimerTask timerTask;
             mTimer = new Timer();
             timerTask = new TimerTask() {
                 @Override
                 public void run() {
-                    if (Math.abs(mTargetDegrees-mDegrees)<=0.5||Math.abs(mTargetDegrees-mDegrees)>=359.5) {
+                    if (Math.abs(mTargetDegrees-mDegrees)<=1||Math.abs(mTargetDegrees-mDegrees)>=359) {
                         mTimer.cancel();
                         mDegrees = mTargetDegrees;
                         mActivity.runOnUiThread(new Runnable() {
@@ -298,7 +334,7 @@ public class CompassView extends View {
                     }
                 }
             };
-            mTimer.schedule(timerTask,0,15);
+            mTimer.schedule(timerTask,0,mTimerPeriod);
         }else{
             mDegrees=(degrees+360) % 360;
             invalidate();
@@ -344,7 +380,7 @@ public class CompassView extends View {
     }
 
     public void setRangeDegrees(float range) {
-        if ((mRangeDegrees < 90) || (mRangeDegrees > 360))
+        if ((mRangeDegrees < 10) || (mRangeDegrees > 360))
             throw new IndexOutOfBoundsException(getResources().getString(
                     R.string.out_index_range_degrees)
                     + mRangeDegrees);
