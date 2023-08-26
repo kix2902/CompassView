@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="compass_north">N</string>
+    <string name="compass_east">O</string>
+    <string name="compass_south">S</string>
+    <string name="compass_west">W</string>
+    <string name="compass_northeast">NO</string>
+    <string name="compass_northwest">NW</string>
+    <string name="compass_southeast">SO</string>
+    <string name="compass_southwest">SW</string>
+
+</resources>
